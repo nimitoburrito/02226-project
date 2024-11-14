@@ -95,7 +95,7 @@ def find_shortest_paths_for_streams(graph, streams_file_path):
             #print(f"Path for stream {stream_name}: {' -> '.join(path)}")
         except nx.NetworkXNoPath:
             # If no path is found, store None or a message indicating no path found
-            stream_paths[row] = None
+            stream_paths[stream_name] = None
             #print(f"No path found for stream {stream_name} from {source_node} to {destination_node}")
 
     #print(f"Stream Paths Dictionary: {stream_paths}")
