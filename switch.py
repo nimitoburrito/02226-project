@@ -30,21 +30,23 @@ class Switch:
         b_H_hat = 0
         r_H_hat = 0
         for frame in higher_priorities:
-            b_H_hat += frame[5]
-            r_H_hat += frame[5]/frame[6]
+            b_H_hat += int(frame[5])
+            r_H_hat += int(frame[5])/int(frame[6])
         b_C_j_hat = 0
         for frame in same_priorities:
-            b_C_j_hat += frame[5]
+            b_C_j_hat += int(frame[5])
 
-        b_j_hat = frame_j[5]
+        b_j_hat = int(frame_j[5])
 
-        l_j_breve = frame_j[5]
+        l_j_breve = int(frame_j[5])
+        l_L_hat = 0
 
-        l_L_hat = lower_priorities[0][5]
+        if lower_priorities:
+            l_L_hat = int(lower_priorities[0][5])
 
         for frame in lower_priorities:
-            if frame[5] > l_L_hat:
-                l_L_hat = frame[5]
+            if int(frame[5]) > l_L_hat:
+                l_L_hat = int(frame[5])
 
         r = 1000000000
 

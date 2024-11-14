@@ -139,6 +139,19 @@ for path in paths:
         #print(node)
         prev_node=node
 
-for node in G:
-    if type(node) is Switch:
-        print(node.all_frames)
+sums = []
+for path in paths:
+    current_sums = 0
+    for node in paths[path]:
+        if type(node) is Switch:
+            print(node.calculate_delay(get_streams_by_name('small-streams.csv', path),prev_node))
+            current_sums += node.calculate_delay(get_streams_by_name('small-streams.csv', path),prev_node)
+            #print(get_streams_by_name('small-streams.csv', path))
+        #print(node)
+        prev_node=node
+    sums.append(current_sums)
+
+print(sums)
+#for node in G:
+#    if type(node) is Switch:
+#        print(node.all_frames)
