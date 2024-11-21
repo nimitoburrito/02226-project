@@ -140,18 +140,29 @@ for path in paths:
         prev_node=node
 
 sums = []
+f=open("output.csv",'w')
+
 for path in paths:
     current_sums = 0
+    current_path = ""
     for node in paths[path]:
         if type(node) is Switch:
-            print(node.calculate_delay(get_streams_by_name('small-streams.csv', path),prev_node))
+            #print(node.calculate_delay(get_streams_by_name('small-streams.csv', path),prev_node))
             current_sums += node.calculate_delay(get_streams_by_name('small-streams.csv', path),prev_node)
             #print(get_streams_by_name('small-streams.csv', path))
+            current_path += node.id
+        else:
+            current_path += node
         #print(node)
+        current_path += "->"
         prev_node=node
-    sums.append(current_sums)
 
-print(sums)
+
+    sums.append(current_sums)
+    line = path + ', ' + str(current_sums) + ', ' + get_streams_by_name('small-streams.csv', path)[7] + ", " + current_path[:-2] + "\n"
+    f.write(line)
+
+#print(sums)
 #for node in G:
 #    if type(node) is Switch:
 #        print(node.all_frames)
