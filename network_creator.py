@@ -4,6 +4,9 @@ import csv
 
 from switch import *
 
+topology_file = 'small-topology.v2.csv'
+streams_file = 'small-streams.v2.csv'
+
 def create_graph_from_csv(file_path):
     # Initialize a graph
     G = nx.Graph()
@@ -126,15 +129,15 @@ def get_streams_by_name(streams_file_path, name):
 
 # Example usage:
 # 1. First create the graph from your topology CSV file
-G = create_graph_from_csv('small-topology.csv')  # Load your network graph
+G = create_graph_from_csv(topology_file)  # Load your network graph
 
 # 2. Then, call the function to find paths for each stream
-paths = find_shortest_paths_for_streams(G, 'small-streams.csv')
+paths = find_shortest_paths_for_streams(G, streams_file)
 
 for path in paths:
     for node in paths[path]:
         if type(node) is Switch:
-            node.add_frame(get_streams_by_name('small-streams.csv', path), prev_node)
+            node.add_frame(get_streams_by_name(streams_file, path), prev_node)
             #print(get_streams_by_name('small-streams.csv', path))
         #print(node)
         prev_node=node
@@ -148,7 +151,7 @@ for path in paths:
     for node in paths[path]:
         if type(node) is Switch:
             #print(node.calculate_delay(get_streams_by_name('small-streams.csv', path),prev_node))
-            current_sums += node.calculate_delay(get_streams_by_name('small-streams.csv', path),prev_node)
+            current_sums += node.calculate_delay(get_streams_by_name(streams_file, path),prev_node)
             #print(get_streams_by_name('small-streams.csv', path))
             current_path += node.id
         else:
@@ -159,7 +162,7 @@ for path in paths:
 
 
     sums.append(current_sums)
-    line = path + ', ' + str(current_sums) + ', ' + get_streams_by_name('small-streams.csv', path)[7] + ", " + current_path[:-2] + "\n"
+    line = path + ', ' + str(current_sums) + ', ' + get_streams_by_name(streams_file, path)[7] + ", " + current_path[:-2] + "\n"
     f.write(line)
 
 #print(sums)
