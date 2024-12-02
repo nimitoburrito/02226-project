@@ -4,8 +4,10 @@ import csv
 
 from switch import *
 
-topology_file = 'small-topology.v2.csv'
-streams_file = 'small-streams.v2.csv'
+topology_file = 'test-topology.v2.csv'
+streams_file = 'test-streams.v2.csv'
+
+all_switches = []
 
 def create_graph_from_csv(file_path):
     # Initialize a graph
@@ -34,7 +36,10 @@ def create_graph_from_csv(file_path):
                 ports = parts[2]
                 domain = parts[3] if len(parts) > 3 else None
             
-                G.add_node(Switch(device_name, ports))
+                switch = Switch(device_name, ports)
+
+                G.add_node(switch)
+                all_switches.append(switch)
 
             # Process links (LINK entries)
             elif parts[0] == 'LINK':
@@ -44,7 +49,7 @@ def create_graph_from_csv(file_path):
                 destination_device = parts[4]
                 destination_port = parts[5]
                 domain = parts[6] if len(parts) > 6 else None
-                
+
                 # Add edge between specified nodes with a label (link ID)
                 if source_device.startswith('sw') and destination_device.startswith('node'):
                     G.add_edge(Switch(source_device,source_port), destination_device, label=link_id, SourcePort=source_port, DestinationPort=destination_port, Domain=domain)
@@ -52,7 +57,6 @@ def create_graph_from_csv(file_path):
                     G.add_edge(source_device, Switch(destination_device, destination_port), label=link_id, SourcePort=source_port, DestinationPort=destination_port, Domain=domain)
                 if source_device.startswith('sw') and destination_device.startswith('sw'):
                     G.add_edge(Switch(source_device, source_port), Switch(destination_device, destination_port), label=link_id, SourcePort=source_port, DestinationPort=destination_port, Domain=domain)
-                
 
     # Draw the graph
     
@@ -89,7 +93,7 @@ def find_shortest_paths_for_streams(graph, streams_file_path):
         size = row[5]
         period = row[6]
         deadline = row[7]
-            
+
         try:
             # Find the shortest path between source and destination
             path = nx.shortest_path(graph, source=source_node, target=destination_node)
@@ -137,6 +141,9 @@ paths = find_shortest_paths_for_streams(G, streams_file)
 for path in paths:
     for node in paths[path]:
         if type(node) is Switch:
+
+            all_switches[all_switches.index(node)].add_frame(get_streams_by_name(streams_file, path), prev_node)
+
             node.add_frame(get_streams_by_name(streams_file, path), prev_node)
             #print(get_streams_by_name('small-streams.csv', path))
         #print(node)
@@ -150,10 +157,11 @@ for path in paths:
     current_path = ""
     for node in paths[path]:
         if type(node) is Switch:
-            #print(node.calculate_delay(get_streams_by_name('small-streams.csv', path),prev_node))
-            current_sums += node.calculate_delay(get_streams_by_name(streams_file, path),prev_node)
+            #print(all_switches[all_switches.index(node)].all_frames)
+            #print(all_switches[all_switches.index(node)].id)
+            current_sums += all_switches[all_switches.index(node)].calculate_delay(get_streams_by_name(streams_file, path),prev_node)
             #print(get_streams_by_name('small-streams.csv', path))
-            current_path += node.id
+            current_path += all_switches[all_switches.index(node)].id
         else:
             current_path += node
         #print(node)
