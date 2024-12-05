@@ -1,0 +1,8 @@
+3,Stream_1,ATS,node1_1,node2,500,50000,15000
+2,Stream_2,ATS,node1_1,node2,600,60000,15000
+2,Stream_3,ATS,node1_1,node2,500,50000,15000
+1,Stream_4,ATS,node1_1,node2,500,50000,15000
+2,Stream_5,ATS,node1_2,node2,500,50000,15000
+2,Stream_6,ATS,node2,node1_1,500,50000,15000
+2,Stream_7,ATS,node1_1,node3,700,70000,15000
+2,Stream_8,ATS,node3,node4,500,50000,15000
