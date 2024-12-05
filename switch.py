@@ -31,7 +31,7 @@ class Switch:
         r_H_hat = 0
         for frame in higher_priorities:
             b_H_hat += (int(frame[5])/8)
-            r_H_hat += (int(frame[5])/8)/int(frame[6])
+            r_H_hat += (int(frame[5])/8)/(int(frame[6])*1000000)
         b_C_j_hat = 0
         for frame in same_priorities:
             b_C_j_hat += (int(frame[5])/8)
@@ -48,10 +48,10 @@ class Switch:
             if int(frame[5]) > l_L_hat:
                 l_L_hat = int(frame[5])/8
 
-        r = 1000000
+        r = 1000000000
 
 
-        return (b_H_hat + b_C_j_hat + b_j_hat - l_j_breve + l_L_hat)/(r-r_H_hat) + (l_j_breve/r)
+        return ((b_H_hat + b_C_j_hat + b_j_hat - l_j_breve + l_L_hat)/(r-r_H_hat) + (l_j_breve/r))*1000000
 
     def calculate_delay(self, frame, ingress):
         highest = self.calculate_individual_delay(frame)
