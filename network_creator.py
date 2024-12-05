@@ -4,8 +4,8 @@ import csv
 
 from switch import *
 
-topology_file = 'test-topology.v2.csv'
-streams_file = 'test-streams.v2.csv'
+topology_file = 'C://Users//Rares//Desktop//Network Embededd Systems//Project//dtu-teaching//tsn-test-cases//simulation_output//topology.csv'
+streams_file = 'C://Users//Rares//Desktop//Network Embededd Systems//Project//dtu-teaching//tsn-test-cases//simulation_output//streams.csv'
 
 all_switches = []
 
@@ -51,23 +51,23 @@ def create_graph_from_csv(file_path):
                 domain = parts[6] if len(parts) > 6 else None
 
                 # Add edge between specified nodes with a label (link ID)
-                if source_device.startswith('sw') and destination_device.startswith('node'):
+                if source_device.startswith('SW') and destination_device.startswith('ES'):
                     G.add_edge(Switch(source_device,source_port), destination_device, label=link_id, SourcePort=source_port, DestinationPort=destination_port, Domain=domain)
-                if source_device.startswith('node') and destination_device.startswith('sw'):
+                if source_device.startswith('ES') and destination_device.startswith('SW'):
                     G.add_edge(source_device, Switch(destination_device, destination_port), label=link_id, SourcePort=source_port, DestinationPort=destination_port, Domain=domain)
-                if source_device.startswith('sw') and destination_device.startswith('sw'):
+                if source_device.startswith('SW') and destination_device.startswith('SW'):
                     G.add_edge(Switch(source_device, source_port), Switch(destination_device, destination_port), label=link_id, SourcePort=source_port, DestinationPort=destination_port, Domain=domain)
 
-    # Draw the graph
-    
-    #plt.figure(figsize=(10, 8))
-    #pos = nx.spring_layout(G)  # Layout for better visualization
-    #nx.draw(G, pos, with_labels=True, node_color="skyblue", edge_color="gray", node_size=500, font_size=10)
-    #edge_labels = nx.get_edge_attributes(G, 'label')
-    #nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color='red')
-    #plt.show()
-    
-
+   # Draw the graph
+   #
+   #  plt.figure(figsize=(10, 8))
+   #  pos = nx.spring_layout(G)  # Layout for better visualization
+   #  nx.draw(G, pos, with_labels=True, node_color="skyblue", edge_color="gray", node_size=500, font_size=10)
+   #  edge_labels = nx.get_edge_attributes(G, 'label')
+   #  nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color='red')
+   #  plt.show()
+   #
+   #
     return G
 
 # Example usage: call the function with your CSV file
